@@ -8,9 +8,6 @@
 
 #include <imgui_freetype.h>
 
-#include <algorithm>
-#include <cmath>
-
 namespace hex::fonts::loader {
 
     void loadFont(const ContentRegistry::Settings::Widgets::Widget &widget, const UnlocalizedString &name, ImGuiFreeTypeLoaderFlags extraFlags, ImFont **imguiFont) {
@@ -26,7 +23,7 @@ namespace hex::fonts::loader {
 
         ImFontConfig config;
         config.MergeMode = false;
-        config.SizePixels = settings.getFontSize() / ImHexApi::System::getNativeScale();
+        config.SizePixels = settings.getFontSize();
         config.OversampleH = 3;
         config.OversampleV = 2;
         config.RasterizerDensity = 2.0F;
@@ -100,7 +97,7 @@ namespace hex::fonts::loader {
             config.OversampleV = 1;
             config.RasterizerDensity = 2.0F;
             config.GlyphOffset = { extraFont.offset.x, -extraFont.offset.y };
-            config.SizePixels = settings.getFontSize() * extraFont.fontSizeMultiplier.value_or(1) / ImHexApi::System::getNativeScale();
+            config.SizePixels = settings.getFontSize() * extraFont.fontSizeMultiplier.value_or(1);
             atlas->AddFontFromMemoryTTF(const_cast<u8 *>(extraFont.fontData.data()), extraFont.fontData.size(), 0.0F, &config);
             atlas->Sources.back().FontDataOwnedByAtlas = false;
         }
