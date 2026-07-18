@@ -336,6 +336,19 @@ namespace hex::ui {
         ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove;
         if (!m_lines.m_ignoreImGuiChild)
             ImGui::BeginChild(title, textEditorSize, childFlags, windowFlags);
+
+        ImGui::PopStyleColor();
+        if (m_handleKeyboardInputs) {
+            handleKeyboardInputs();
+        }
+
+        if (m_handleMouseInputs)
+            handleMouseInputs();
+
+        if (m_lines.m_colorizerEnabled)
+            m_lines.colorizeInternal();
+        renderText(textEditorSize);
+
         auto window = ImGui::GetCurrentWindow();
         window->ScrollbarSizes = ImVec2(scrollBarSize * scroll_x, scrollBarSize * scroll_y);
         ImGui::GetCurrentWindowRead()->ScrollbarSizes = ImVec2(scrollBarSize * scroll_y, scrollBarSize * scroll_x);
@@ -349,17 +362,6 @@ namespace hex::ui {
             ImGui::Scrollbar(ImGuiAxis_X);
             ImGui::GetCurrentWindow()->ScrollbarX = false;
         }
-        ImGui::PopStyleColor();
-        if (m_handleKeyboardInputs) {
-            handleKeyboardInputs();
-        }
-
-        if (m_handleMouseInputs)
-            handleMouseInputs();
-
-        if (m_lines.m_colorizerEnabled)
-            m_lines.colorizeInternal();
-        renderText(textEditorSize);
 
         if (!m_lines.m_ignoreImGuiChild)
             ImGui::EndChild();
